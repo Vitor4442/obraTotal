@@ -3,7 +3,7 @@ class ObrasController < ApplicationController
   before_action :set_obra, only: %i[show edit update]
 
   def index
-    @obras = Obra.all
+    load_obras
   end
 
   def show; end
@@ -14,19 +14,20 @@ class ObrasController < ApplicationController
 
   def create
     @obra = Obra.new(obra_params)
-    @obra.created_by = current_user
+    @obra.created_by_id = current_user.id
 
     if @obra.save
-      redirect_to @obra
+      redirect_to obras_path, notice: "Obra criada com sucesso!"
     else
-      render :new
+      @obras = Obra.all
+      render :index, status: :unprocessable_entity
     end
   end
 
   def edit; end
 
   def update
-    @obra.updated_by = current_user
+    @obra.updated_by = current_user.id
 
     if @obra.update(obra_params)
       redirect_to @obra
@@ -43,5 +44,9 @@ class ObrasController < ApplicationController
 
   def obra_params
     params.require(:obra).permit(:nome, :endereco, :progresso)
+  end
+
+  def load_obras
+    @obras = Obra.where(created_by_id: current_user, deleted_at: nil)
   end
 end
