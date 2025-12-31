@@ -1,39 +1,38 @@
 class ObrasController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_obra, only: %i[show update destroy]
+  before_action :set_obra, only: %i[show edit update]
 
   def index
     @obras = Obra.all
   end
 
-  def show
+  def show; end
+
+  def new
+    @obra = Obra.new
   end
 
   def create
     @obra = Obra.new(obra_params)
-    @obra.created_by_id = current_user.id
+    @obra.created_by = current_user
 
     if @obra.save
-      render json: @obra, status: :created
+      redirect_to @obra
     else
-      render json: @obra.errors, status: :unprocessable_entity
+      render :new
     end
   end
+
+  def edit; end
 
   def update
-    if @obra.update(obra_params.merge(updated_by_id: current_user.id))
-      render json: @obra
-    else
-      render json: @obra.errors, status: :unprocessable_entity
-    end
-  end
+    @obra.updated_by = current_user
 
-  def destroy
-    @obra.update(
-      deleted_at: Time.current,
-      deleted_by_id: current_user.id
-    )
-    head :no_content
+    if @obra.update(obra_params)
+      redirect_to @obra
+    else
+      render :edit
+    end
   end
 
   private
@@ -43,6 +42,6 @@ class ObrasController < ApplicationController
   end
 
   def obra_params
-    params.require(:obra).permit(:nome, :endereco)
+    params.require(:obra).permit(:nome, :endereco, :progresso)
   end
 end

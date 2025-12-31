@@ -1,0 +1,30 @@
+<h1>Obras</h1>
+
+<%= link_to "Nova obra", new_obra_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Endereço</th>
+      <th>Status</th>
+      <th>Progresso</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @obras.each do |obra| %>
+      <tr>
+        <td><%= obra.nome %></td>
+        <td><%= obra.endereco %></td>
+        <td><%= obra.status %></td>
+        <td><%= obra.progresso %>%</td>
+        <td>
+          <%= link_to "Ver", obra_path(obra) %> |
+          <%= link_to "Editar", edit_obra_path(obra) %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
