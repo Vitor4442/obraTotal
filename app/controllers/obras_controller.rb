@@ -1,0 +1,2 @@
+class ObrasController < ApplicationController
+end
