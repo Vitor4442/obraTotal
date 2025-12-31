@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  endereco: MyString
+  progresso: 1
+  created_by_id: 
+  updated_by_id: 
+  deleted_by_id: 
+  deleted_at: 2025-12-31 11:59:14
+
+two:
+  nome: MyString
+  endereco: MyString
+  progresso: 1
+  created_by_id: 
+  updated_by_id: 
+  deleted_by_id: 
+  deleted_at: 2025-12-31 11:59:14
