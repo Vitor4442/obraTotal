@@ -38,7 +38,7 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <% @obras.each do |obra| %>
               <tr class="hover:bg-slate-50 transition duration-150">
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-slate-900">
+                <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
                     <div class="h-10 w-10 flex-shrink-0 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,6 @@
                   <div class="flex items-start">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                     <%= obra.endereco %>
                   </div>
@@ -67,22 +66,35 @@
                     <span class="text-xs font-semibold text-slate-700"><%= obra.progresso %>% Concluído</span>
                   </div>
                   <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-orange-500 h-2 rounded-full" style="width: <%= obra.progresso %>%"></div>
+                    <div class="bg-orange-500 h-2 rounded-full transition-all duration-500" style="width: <%= obra.progresso %>%"></div>
                   </div>
                 </td>
 
                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div class="flex justify-end space-x-2">
-                    <%= link_to obra_path(obra), class: "p-2 text-slate-400 hover:text-slate-600 transition", title: "Visualizar Detalhes" do %>
+                  <div class="flex justify-end items-center space-x-2">
+                    <%# Visualizar %>
+                    <%= link_to obra_path(obra), class: "p-2 text-slate-400 hover:text-slate-600 transition", title: "Visualizar" do %>
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
                     <% end %>
 
-                    <%= link_to edit_obra_path(obra), class: "p-2 text-slate-400 hover:text-orange-600 transition", title: "Editar Obra" do %>
+                    <%# Editar %>
+                    <%= link_to edit_obra_path(obra), data: { turbo_frame: "modal" }, class: "p-2 text-slate-400 hover:text-orange-600 transition", title: "Editar" do %>
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    <% end %>
+
+                    <%# Deletar %>
+                    <%= button_to obra_path(obra), 
+                        method: :delete, 
+                        form: { data: { turbo_confirm: "Tem certeza que deseja excluir a obra '#{obra.nome}'?" } },
+                        class: "p-2 text-slate-400 hover:text-red-600 transition border-none bg-transparent cursor-pointer", 
+                        title: "Excluir" do %>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     <% end %>
                   </div>
