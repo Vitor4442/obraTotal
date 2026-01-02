@@ -1,14 +1,18 @@
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-2xl mx-auto">
+<%# app/views/obras/new.html.erb %>
+<%= turbo_frame_tag "modal" do %>
+  <%# Overlay escuro no fundo %>
+  <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     
-    <%= link_to obras_path, class: "inline-flex items-center text-sm font-medium text-gray-500 hover:text-orange-600 transition mb-6" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-      </svg>
-      Voltar para a listagem
-    <% end %>
+    <%# Container do Modal %>
+    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-100 max-w-2xl w-full relative">
+      
+      <%# Botão Fechar (X) no topo direito %>
+      <%= link_to obras_path, data: { turbo_frame: "_top" }, class: "absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      <% end %>
 
-    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-100">
       <div class="bg-slate-800 px-8 py-6 text-white">
         <div class="flex items-center">
           <div class="p-3 bg-orange-500 rounded-lg mr-4">
@@ -18,59 +22,29 @@
           </div>
           <div>
             <h1 class="text-2xl font-bold">Novo Canteiro de Obra</h1>
-            <p class="text-slate-400 text-sm">Preencha os dados abaixo para iniciar o monitoramento do projeto.</p>
+            <p class="text-slate-400 text-sm">Inicie o monitoramento do projeto.</p>
           </div>
         </div>
       </div>
 
-      <%= form_with model: @obra, local: true, class: "p-8 space-y-6" do |f| %>
-        
-        <%# Nome da Obra %>
+      <%= form_with model: @obra, class: "p-8 space-y-6" do |f| %>
+        <%# Seus campos de formulário aqui (Nome, Endereço, Progresso) %>
         <div>
           <%= f.label :nome, "Nome do Projeto", class: "block text-sm font-bold text-gray-700 mb-2" %>
-          <div class="relative">
-            <%= f.text_field :nome, 
-                class: "block w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-orange-500 focus:border-orange-500 transition border", 
-                placeholder: "Ex: Edifício Horizonte - Fase 1" %>
-          </div>
+          <%= f.text_field :nome, class: "block w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-orange-500 focus:border-orange-500 transition border" %>
         </div>
 
-        <%# Endereço %>
         <div>
-          <%= f.label :endereco, "Localização / Endereço", class: "block text-sm font-bold text-gray-700 mb-2" %>
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              </svg>
-            </div>
-            <%= f.text_field :endereco, 
-                class: "block w-full pl-10 px-4 py-3 rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-orange-500 focus:border-orange-500 transition border", 
-                placeholder: "Rua, número, bairro e cidade" %>
-          </div>
+          <%= f.label :endereco, "Localização", class: "block text-sm font-bold text-gray-700 mb-2" %>
+          <%= f.text_field :endereco, class: "block w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-orange-500 focus:border-orange-500 transition border" %>
         </div>
 
-        <%# Progresso %>
-        <div>
-          <div class="flex justify-between items-center mb-2">
-            <%= f.label :progresso, "Progresso Inicial (%)", class: "block text-sm font-bold text-gray-700" %>
-            <span id="progress-value" class="text-sm font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded">0%</span>
-          </div>
-          <%= f.number_field :progresso, min: 0, max: 100, 
-              class: "block w-full px-4 py-3 rounded-lg border-gray-300 bg-gray-50 text-gray-900 focus:ring-orange-500 focus:border-orange-500 transition border",
-              oninput: "document.getElementById('progress-value').innerText = this.value + '%'" %>
-          <p class="mt-2 text-xs text-gray-400 italic">Defina a porcentagem atual de conclusão da obra.</p>
-        </div>
-
-        <div class="border-t border-gray-100 pt-6">
-          <div class="flex items-center justify-end space-x-4">
-            <%= link_to "Cancelar", obras_path, class: "px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-800 transition" %>
-            
-            <%= f.submit "Cadastrar Projeto", 
-                class: "px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg shadow-lg transform active:scale-95 transition-all cursor-pointer" %>
-          </div>
+        <div class="border-t border-gray-100 pt-6 flex items-center justify-end space-x-4">
+          <%# data: { turbo_frame: "_top" } faz o link recarregar a página inteira para fechar o modal %>
+          <%= link_to "Cancelar", obras_path, data: { turbo_frame: "_top" }, class: "px-6 py-3 text-sm font-medium text-gray-600 hover:text-gray-800 transition" %>
+          <%= f.submit "Cadastrar Projeto", class: "px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg shadow-lg cursor-pointer" %>
         </div>
       <% end %>
     </div>
   </div>
-</div>
+<% end %>

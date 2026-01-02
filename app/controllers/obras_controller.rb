@@ -17,12 +17,11 @@ end
     @obra = Obra.new(obra_params)
     @obra.created_by_id = current_user.id
 
-    if @obra.save
-      redirect_to obras_path, notice: "Obra criada com sucesso!"
-    else
-      @obras = Obra.all
-      render :index, status: :unprocessable_entity
-    end
+  if @obra.save
+    redirect_to obras_path, notice: "Obra criada!", status: :see_other
+else
+    render :new, status: :unprocessable_entity
+  end
   end
 
   def edit; end
