@@ -3,10 +3,11 @@ class ObrasController < ApplicationController
   before_action :set_obra, only: %i[show edit update]
 
   def index
-    load_obras
+    load_obras.ordered
   end
 
-  def show; end
+  def show; 
+end
 
   def new
     @obra = Obra.new
