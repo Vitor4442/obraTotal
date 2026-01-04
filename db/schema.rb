@@ -10,9 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_31_174419) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_04_024845) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "andars", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "created_by_id"
+    t.datetime "deleted_at"
+    t.integer "deleted_by_id"
+    t.text "descricao"
+    t.string "numero"
+    t.bigint "obra_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "updated_by_id"
+    t.index ["obra_id"], name: "index_andars_on_obra_id"
+  end
 
   create_table "obras", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -31,12 +44,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_31_174419) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "nome"
+    t.string "provider"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token"
     t.string "sobrenome"
+    t.string "uid"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "andars", "obras"
 end
